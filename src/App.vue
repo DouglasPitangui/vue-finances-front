@@ -38,19 +38,21 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <router-view>
+        <Login />
+      </router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import Login from './modules/auth/views/Login'
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld
+    Login
   },
 
   data: () => ({
