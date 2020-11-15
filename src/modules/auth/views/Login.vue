@@ -28,6 +28,8 @@
                 name="email"
                 label="Email"
                 type="email"
+                :error-messages="emailErros"
+                :success="!$v.user.email.$invalid"
                 v-model.trim="$v.user.email.$model"
               ></v-text-field>
               <v-text-field
@@ -35,6 +37,8 @@
                 name="password"
                 label="Senha"
                 type="password"
+                :error-messages="passwordErros"
+                :success="!$v.user.password.$invalid"
                 v-model.trim="$v.user.password.$model"
               ></v-text-field>
             </v-form>
@@ -85,6 +89,31 @@ export default {
         required,
         minLength: minLength(6)
       }
+    }
+  },
+  computed: {
+    emailErros () {
+      const erros = []
+      const email = this.$v.user.email
+      // $dirty valida se o usuário já digitou algo no campo
+      if (!email.$dirty) { return erros }
+      if (!email.email) { erros.push('Insira um email válido') }
+      // validação das propriedades do vuelidate required e email
+      if (!email.required) { erros.push('Email obrigatório') }
+      if (!email.email) { erros.push('Insira um email válido') }
+
+      return erros
+    },
+    passwordErros () {
+      const erros = []
+      const password = this.$v.user.password
+      // $dirty valida se o usuário já digitou algo no campo
+      if (!password.$dirty) { return erros }
+      // validação das propriedades do vuelidate required e minLength
+      if (!password.required) { erros.push('Senha obrigatório') }
+      if (!password.minLength) { erros.push(`Insira pelo menos ${password.$params.minLength.min} caracteres!`) }
+
+      return erros
     }
   },
   methods: {
